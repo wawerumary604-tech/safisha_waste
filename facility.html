@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sorting Facility — Safisha</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dashboard-body">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-icon"><i class="fa-solid fa-recycle"></i></span>
+      <span class="logo-text">Safisha</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showPanel('overview', this)">
+        <span class="nav-icon"><i class="fa-solid fa-house"></i></span><span>Overview</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('incoming', this)">
+        <span class="nav-icon"><i class="fa-solid fa-boxes-stacked"></i></span><span>Incoming Waste</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('bidding', this)">
+        <span class="nav-icon"><i class="fa-solid fa-gavel"></i></span><span>Active Bids</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('completed', this)">
+        <span class="nav-icon"><i class="fa-solid fa-circle-check"></i></span><span>Completed</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn btn-outline btn-full" onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-house"></i> Back to Site
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="topbar-title">Sorting Facility Overview</div>
+      <div class="topbar-user">
+        <div class="avatar facility-avatar"><i class="fa-solid fa-industry"></i></div>
+        <span>Facility View</span>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <div class="panel active" id="panel-overview">
+        <h2 class="panel-title">Sorting Facility Dashboard <i class="fa-solid fa-industry"></i></h2>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#e3f2fd"><i class="fa-solid fa-boxes-stacked"></i></div>
+            <div>
+              <div class="stat-card-num" id="fac-incoming">0</div>
+              <div class="stat-card-label">Incoming</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#fff3e0"><i class="fa-solid fa-gavel"></i></div>
+            <div>
+              <div class="stat-card-num" id="fac-active-bids">0</div>
+              <div class="stat-card-label">Active Bids</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#e8f5e9"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <div class="stat-card-num" id="fac-completed">0</div>
+              <div class="stat-card-label">Completed</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#fce4ec"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div>
+              <div class="stat-card-num" id="fac-total-bid">KES 0</div>
+              <div class="stat-card-label">Total Bid Value</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Facility Activity Feed</h3>
+          <div id="facility-feed" class="activity-list">
+            <div class="empty-state">No waste received yet.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INCOMING WASTE -->
+      <div class="panel" id="panel-incoming">
+        <h2 class="panel-title">Incoming Waste Shipments</h2>
+        <div id="incoming-list" class="posts-grid"></div>
+      </div>
+
+      <!-- BIDDING -->
+      <div class="panel" id="panel-bidding">
+        <h2 class="panel-title">Active Bidding</h2>
+        <div id="bidding-list" class="posts-grid"></div>
+      </div>
+
+      <!-- COMPLETED -->
+      <div class="panel" id="panel-completed">
+        <h2 class="panel-title">Completed Lots</h2>
+        <div id="completed-list" class="posts-grid"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/app.js"></script>
+  <script src="js/facility.js"></script>
+</body>
+</html>

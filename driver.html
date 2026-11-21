@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Driver Dashboard — Safisha</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="dashboard-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="logo-icon"><i class="fa-solid fa-recycle"></i></span>
+      <span class="logo-text">Safisha</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showPanel('overview', this)">
+        <span class="nav-icon"><i class="fa-solid fa-house"></i></span><span>Overview</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('available', this)">
+        <span class="nav-icon"><i class="fa-solid fa-trash-can"></i></span><span>Available Jobs</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('myjobs', this)">
+        <span class="nav-icon"><i class="fa-solid fa-truck"></i></span><span>My Collections</span>
+      </a>
+      <a href="#" class="nav-item" onclick="showPanel('profile', this)">
+        <span class="nav-icon"><i class="fa-solid fa-user"></i></span><span>Profile</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="driver-status-toggle">
+        <span>Status:</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="driver-online" checked onchange="toggleDriverStatus()" />
+          <span class="slider"></span>
+        </label>
+        <span id="status-label" class="status-online">Online</span>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <button class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-title" id="topbar-title">Overview</div>
+      <div class="topbar-user">
+        <div class="avatar driver-avatar" id="driver-avatar-top">D</div>
+        <span id="driver-name-top">Driver</span>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- OVERVIEW PANEL -->
+      <div class="panel active" id="panel-overview">
+        <h2 class="panel-title">Driver Dashboard &mdash; <span id="welcome-name">Driver</span> <i class="fa-solid fa-truck"></i></h2>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#e8f5e9"><i class="fa-solid fa-clipboard-list"></i></div>
+            <div>
+              <div class="stat-card-num" id="stat-available">0</div>
+              <div class="stat-card-label">Available Jobs</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#e3f2fd"><i class="fa-solid fa-truck"></i></div>
+            <div>
+              <div class="stat-card-num" id="stat-accepted">0</div>
+              <div class="stat-card-label">My Accepted</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#fff3e0"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <div class="stat-card-num" id="stat-done">0</div>
+              <div class="stat-card-label">Collected</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#fce4ec"><i class="fa-solid fa-industry"></i></div>
+            <div>
+              <div class="stat-card-num" id="stat-sent">0</div>
+              <div class="stat-card-label">Sent to Facility</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alert for high urgency jobs -->
+        <div id="urgency-alert" class="urgency-banner" style="display:none">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <strong> High urgency jobs available!</strong> Check Available Jobs tab.
+        </div>
+
+        <div class="panel-section">
+          <h3>Recent Activity</h3>
+          <div id="driver-activity" class="activity-list">
+            <div class="empty-state">No activity yet. Accept your first job!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVAILABLE JOBS PANEL -->
+      <div class="panel" id="panel-available">
+        <div class="panel-header-row">
+          <h2 class="panel-title">Available Garbage Jobs</h2>
+          <div class="filter-group">
+            <select id="filter-type" onchange="renderAvailableJobs()" class="filter-select">
+              <option value="all">All Types</option>
+              <option value="Household Waste">Household</option>
+              <option value="Recyclables">Recyclables</option>
+              <option value="Organic Waste">Organic</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Construction Debris">Construction</option>
+              <option value="Hazardous Waste">Hazardous</option>
+              <option value="Bulk Items">Bulk Items</option>
+              <option value="Other">Other</option>
+            </select>
+            <select id="filter-urgency" onchange="renderAvailableJobs()" class="filter-select">
+              <option value="all">All Urgency</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div id="available-jobs-list" class="posts-grid"></div>
+      </div>
+
+      <!-- MY COLLECTIONS PANEL -->
+      <div class="panel" id="panel-myjobs">
+        <div class="panel-header-row">
+          <h2 class="panel-title">My Collections</h2>
+          <select id="filter-myjobs" onchange="renderMyJobs()" class="filter-select">
+            <option value="all">All</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Collected">Collected</option>
+            <option value="At Facility">Sent to Facility</option>
+          </select>
+        </div>
+        <div id="my-jobs-list" class="posts-grid"></div>
+      </div>
+
+      <!-- PROFILE PANEL -->
+      <div class="panel" id="panel-profile">
+        <h2 class="panel-title">Driver Profile</h2>
+        <div class="profile-card">
+          <div class="profile-avatar driver-avatar" id="profile-avatar-big">D</div>
+          <div class="profile-info">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="profile-name" readonly />
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="profile-email" readonly />
+            </div>
+            <div class="form-group">
+              <label>Phone</label>
+              <input type="tel" id="profile-phone" readonly />
+            </div>
+            <div class="form-group">
+              <label>Vehicle / Truck</label>
+              <input type="text" id="profile-vehicle" readonly />
+            </div>
+            <div class="form-group">
+              <label>License Plate</label>
+              <input type="text" id="profile-license" readonly />
+            </div>
+            <div class="form-group">
+              <label>Account Type</label>
+              <input type="text" value="Driver" readonly />
+            </div>
+            <div class="form-group">
+              <label>Member Since</label>
+              <input type="text" id="profile-since" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- SEND TO FACILITY MODAL -->
+  <div class="modal-overlay" id="modal-facility">
+    <div class="modal">
+      <button class="modal-close" onclick="closeFacilityModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <span class="logo-icon"><i class="fa-solid fa-industry"></i></span>
+        <h2>Send to Sorting Facility</h2>
+        <p>Confirm details before forwarding</p>
+      </div>
+      <form id="facility-form" onsubmit="handleSendToFacility(event)">
+        <input type="hidden" id="facility-post-id" />
+        <div class="form-group">
+          <label>Waste Summary</label>
+          <input type="text" id="facility-summary" readonly />
+        </div>
+        <div class="form-group">
+          <label>Select Sorting Facility</label>
+          <select id="facility-name" required>
+            <option value="">-- Select facility --</option>
+            <option value="Nairobi Recycling Hub">Nairobi Recycling Hub</option>
+            <option value="GreenEarth Sorting Center">GreenEarth Sorting Center</option>
+            <option value="Metro Waste Facility">Metro Waste Facility</option>
+            <option value="EcoSort Nairobi">EcoSort Nairobi</option>
+            <option value="City Compost Center">City Compost Center</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Vehicle Used</label>
+          <input type="text" id="facility-vehicle" readonly />
+        </div>
+        <div class="form-group">
+          <label>Collection Notes</label>
+          <textarea id="facility-notes" rows="3" placeholder="Any notes about the waste condition, weight, bags count etc..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Starting Bid Price (KES)</label>
+          <input type="number" id="facility-bid" placeholder="e.g. 1500" min="0" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">
+          <i class="fa-solid fa-rocket"></i> Send to Facility
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="js/app.js"></script>
+  <script src="js/driver.js"></script>
+</body>
+</html>
